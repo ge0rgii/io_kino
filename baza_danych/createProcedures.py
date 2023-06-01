@@ -10,6 +10,7 @@ cursor = conn.cursor()
 
 drop = """
     DROP PROCEDURE IF EXISTS dodaj_film;
+    DROP PROCEDURE IF EXISTS dodaj_ocene;
     DROP PROCEDURE IF EXISTS dodaj_film_szczegoly;
     DROP PROCEDURE IF EXISTS dodaj_film_rezyserzy;
     DROP PROCEDURE IF EXISTS dodaj_film_aktorzy;
@@ -175,6 +176,16 @@ proc_dodaj_film = """
 """
 cursor.execute(proc_dodaj_film)
 
+proc_dodaj_ocene = """
+    CREATE PROCEDURE dodaj_ocene
+        @film_id INT, 
+        @recenzja NVARCHAR(200),
+        @ocena INT
+    AS
+    SET NOCOUNT ON
+    INSERT INTO oceny VALUES (@film_id, @recenzja, @ocena);
+"""
+cursor.execute(proc_dodaj_ocene)
 
 proc_dodaj_film_szczegoly = """
 CREATE PROCEDURE dodaj_film_szczegoly 

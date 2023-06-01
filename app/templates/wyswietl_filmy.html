@@ -30,6 +30,8 @@
             <th scope="col">Szczegoly</th>
             <th scope="col">Aktorzy</th>
             <th scope="col">Seanse</th>
+            <th scope="col">Recenzje</th>
+            <th scope="col">Ocena</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +44,8 @@
                     <td><a href='szczegoly/{{ film.id }}'>Zobacz Szczegoly</a></td>
                     <td><a href='aktorzy/{{ film.id }}'>Zobacz Aktorow</a></td>
                     <td><a href='seans/{{ film.id }}'>Zobacz Seanse</a></td>
+                    <td><a href='recenzje/{{ film.id }}'>Wyświetl Recenzje</a></td>
+                <td>{{ film.ocena }}</td>
                 </tr>
             {% endfor %}
         </tbody>

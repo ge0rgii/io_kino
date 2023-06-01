@@ -10,6 +10,7 @@ from io_kino.bookTicket import bookTicket
 from io_kino.addMovieDirectors import addMovieDirectors
 from io_kino.addMovieActors import addMovieActors
 from io_kino.addMovieScreening import addMovieScreening
+from io_kino.addRate import addRate
 
 
 
@@ -51,7 +52,6 @@ arg1 = (
     "1997-12-19",
     "03:30:00",
 );addMovie(arg1, cursor)
-
 
 arg = (
     "TITANIC",
@@ -535,8 +535,6 @@ arg3 = (
     7.2
 );addMovieDirectors(arg3, cursor)
 
-
-
 arg3 = (
     "MATRIX", 
     "1999-08-13", 
@@ -574,8 +572,12 @@ arg = (
 );bookTicket(arg, cursor)
 
 
-
-
+for i in range(6):
+    argRate = (
+        str(i),
+        "niezly",
+        "0"
+    );addRate(argRate, cursor)
 
 cursor.commit()
 cursor.close()

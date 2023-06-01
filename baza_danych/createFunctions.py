@@ -11,6 +11,7 @@ cursor = conn.cursor()
 drop = """
     DROP FUNCTION IF EXISTS wyswietl_szczegoly_filmu;
     DROP FUNCTION IF EXISTS wyswietl_szczegoly_filmu_po_id;
+    DROP FUNCTION IF EXISTS wyswietl_recenzje_filmu_po_id;
     DROP FUNCTION IF EXISTS wyswietl_aktorow_filmu;
     DROP FUNCTION IF EXISTS wyswietl_seanse_po_id;
     DROP FUNCTION IF EXISTS wyswietl_sale_po_id;
@@ -22,6 +23,7 @@ drop = """
     DROP VIEW IF EXISTS raport_sprzedazy;
     DROP VIEW IF EXISTS wyswietl_sale_kinowe;
     DROP VIEW IF EXISTS wyswietl_filmy;
+    DROP VIEW IF EXISTS wyswietl_oceny;
     SET IMPLICIT_TRANSACTIONS OFF;
 """
 cursor.execute(drop)
@@ -89,10 +91,27 @@ wyswietl_szczegoly_filmu_po_id = """
         FROM filmy 
         LEFT JOIN   
             filmy_szczegoly AS FS ON FS.film_id = filmy.film_id
-        WHERE filmy.film_id = @id_f
+        WHERE filmy.film_id = @id_F
     )
 """
 cursor.execute(wyswietl_szczegoly_filmu_po_id)
+
+wyswietl_recenzje_filmu_po_id = """
+    CREATE FUNCTION wyswietl_recenzje_filmu_po_id (@id_F INT)
+    RETURNS TABLE
+    AS
+    RETURN( 
+        SELECT 
+            filmy.tytul, 
+            oceny.recenzja, 
+            oceny.ocena
+        FROM filmy 
+         JOIN   
+            oceny ON oceny.film_id = filmy.film_id
+        WHERE filmy.film_id = @id_F
+    )
+"""
+cursor.execute(wyswietl_recenzje_filmu_po_id)
 
 
 wyswietl_aktorow_filmu_po_id = """
@@ -229,20 +248,28 @@ sale = """
 """
 cursor.execute(sale)
 
-
-
-
+wyswietl_oceny= """
+    CREATE VIEW wyswietl_oceny
+    AS
+        SELECT
+            film_id,
+            AVG(ocena) as ocena
+        FROM oceny 
+        GROUP BY film_id
+"""
+cursor.execute(wyswietl_oceny)
 
 wyswietl_filmy = """
     CREATE VIEW wyswietl_filmy
     AS
         SELECT
-            film_id,
+            filmy.film_id,
             tytul,
             premiera,
-            dlugosc
+            dlugosc,
+            ocena
         FROM
-            filmy
+            filmy JOIN wyswietl_oceny ON filmy.film_id = wyswietl_oceny.film_id
 """
 cursor.execute(wyswietl_filmy)
 

@@ -6,6 +6,7 @@ from addMovie import addMovie
 from addMovieDetails import addMovieDetails
 from addMovieActors import addMovieActors
 from addMovieScreening import addMovieScreening
+from addRate import addRate
 from bookTicket import bookTicket 
 
 wyswietl_filmy = Flask(__name__)
@@ -44,7 +45,8 @@ def main():
                 "id":       row[0], 
                 "tytul":    row[1], 
                 "premiera": row[2], 
-                "dlugosc":  row[3]
+                "dlugosc":  row[3],
+                "ocena":  row[4]
             })
     return render_template("wyswietl_filmy.html", filmy = filmy)
 
@@ -61,9 +63,68 @@ def a_wyswietl_filmy():
             "id":       row[0], 
             "tytul":    row[1], 
             "premiera": row[2], 
-            "dlugosc":  row[3]
+            "dlugosc":  row[3],
+            "ocena":  row[4]
             })
     return render_template("a_wyswietl_filmy.html", filmy = filmy)
+
+@wyswietl_filmy.route('/recenzje/<int:id>')
+def recenzje(id):
+    """function generating opinions view"""
+    
+    filmy = []
+    g.cursor.execute("SELECT * FROM wyswietl_recenzje_filmu_po_id(?)", id)
+    for row in g.cursor.fetchall():
+        filmy.append({
+            "tytul":            row[0], 
+            "recenzja":         row[1], 
+            "ocena":          row[2]
+            })
+    return render_template("wyswietl_filmy_recenzje.html", filmy = filmy, film_id = id)
+
+@wyswietl_filmy.route("/dodaj_film", methods = ['GET','POST'])
+def dodaj_film():
+    """function generating adding film view and allowing to add new film for admin"""
+    
+    if request.method == 'GET':
+        return render_template("dodaj_film.html", film = {})
+    if request.method == 'POST':
+        arg = (
+            str(request.form["tytul"]),
+            str(request.form["premiera"]),
+            str(request.form["dlugosc"])
+        )
+        addMovie(arg, g.cursor)
+
+        wyniki=[]
+        for row in g.cursor.fetchall():
+          wyniki.append({"w": row[0]})
+
+        g.conn.commit()
+        return render_template("wynik_dodania.html", wyniki = wyniki)
+
+@wyswietl_filmy.route("/dodaj_recenzje/<int:id>", methods = ['GET','POST'])
+def dodaj_recenzje(id):
+    """function generating adding opinion view and allowing to add new opinion"""
+    
+    if request.method == 'GET':
+        return render_template("dodaj_recenzje.html", film = {})
+    if request.method == 'POST':
+        arg = (
+            str(id),
+            str(request.form["recenzja"]),
+            str(request.form["ocena"])
+        )
+        addRate(arg, g.cursor)
+
+        wyniki=[]
+        for row in g.cursor.fetchall():
+          wyniki.append({"w": row[0]})
+
+        g.conn.commit()
+        return render_template("wynik_dodania.html", wyniki = wyniki)
+
+
 
 
 @wyswietl_filmy.route("/a_wyswietl_filmy/sprzedaz")
@@ -98,31 +159,7 @@ def sale_lista():
             "pracownik_id":                  row[3]
             })
     return render_template("a_sale.html", sale = sale)
-
-
-
-@wyswietl_filmy.route("/dodaj_film", methods = ['GET','POST'])
-def dodaj_film():
-    """function generating adding film view and allowing to add new film for admin"""
     
-    if request.method == 'GET':
-        return render_template("dodaj_film.html", film = {})
-    if request.method == 'POST':
-        arg = (
-            str(request.form["tytul"]),
-            str(request.form["premiera"]),
-            str(request.form["dlugosc"])
-        )
-        addMovie(arg, g.cursor)
-
-        wyniki=[]
-        for row in g.cursor.fetchall():
-          wyniki.append({"w": row[0]})
-
-        g.conn.commit()
-        return render_template("wynik_dodania.html", wyniki = wyniki)
-
-
 @wyswietl_filmy.route("/dodaj_seans", methods = ['GET','POST'])
 def dodaj_seans():
     """function generating adding screening view and allowing to add new film for admin"""
