@@ -8,7 +8,7 @@ python3 $PWD/baza_danych/exampleData.py;
 
 export FLASK_APP=$PWD/app/wyswietl_filmy.py
 export FLASK_DEBUG=1
-if [ $# ]
+if [ $# -eq 1 ]
 then
 python3 -m flask run --port $1
 else
