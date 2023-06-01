@@ -575,8 +575,13 @@ arg = (
 for i in range(6):
     argRate = (
         str(i),
-        "niezly",
-        "0"
+        "niezły film.",
+        str(8 - i)
+    );addRate(argRate, cursor)
+    argRate = (
+        str(i),
+        "TO jest najlepszy film który widziałem w swoim życiu!!!",
+        str(10 - i)
     );addRate(argRate, cursor)
 
 cursor.commit()
