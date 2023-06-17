@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+    <style>
+        h1{text-align: right;}
+    </style>
+    <title>REPERTUAR</title>
+    
+    <link rel="stylesheet" crossorigin="anonymous"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" >
+    
+	<script crossorigin="anonymous"
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" >
+	</script>
+
+</head>
+
+<body>
+    <h2>REPERTUAR</h2>
+     <h1>
+       <td><a href='/'>COFNIJ</a></td>
+     </h1>
+
+	<a href='../../dodaj_recenzje/{{ film_id }}'>Dodaj Recenzje</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">Tytul</th>
+            <th scope="col">Recenzja</th>
+            <th scope="col">Ocena</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for film in filmy %}
+            <tr>
+                <td>{{ film.tytul }}</th>
+                <td>{{ film.recenzja }}</td>
+                <td>{{ film.ocena }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+
+
