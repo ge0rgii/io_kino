@@ -1,6 +1,6 @@
 URUCHOMIENIE
 
-1. pobierz docker
+1. pobierz docker oraz zainstaluj sterownik ODBC Driver 17 for SQL Server
 
 2. pobierz obraz msql server:
 

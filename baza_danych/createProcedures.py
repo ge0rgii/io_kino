@@ -183,7 +183,46 @@ proc_dodaj_ocene = """
         @ocena INT
     AS
     SET NOCOUNT ON
-    INSERT INTO oceny VALUES (@film_id, @recenzja, @ocena);
+        IF @@TRANCOUNT = 1
+        COMMIT
+    BEGIN TRY
+        BEGIN TRAN
+        
+            SET NOCOUNT ON
+
+                DECLARE @id_f AS INT = @film_id
+                IF @id_f IS NULL
+                BEGIN
+                    RAISERROR ('ERROR - FILM O PODANYM ID NIE ISTNIEJE W BAZIE DANYCH' ,16,1)
+                END
+                ELSE IF @ocena < 0.0 BEGIN
+                    RAISERROR ('ERROR - OCENA POWINNA BYC Z ZAKRESU 0-10' ,16,1)
+                END
+                ELSE IF @ocena > 10.0 BEGIN
+                    RAISERROR ('ERROR - OCENA POWINNA BYC Z ZAKRESU 0-10' ,16,1)
+                END
+                ELSE BEGIN
+                    INSERT INTO oceny VALUES (@film_id, @recenzja, @ocena);
+                    COMMIT TRAN
+                    IF @@TRANCOUNT = 0
+                        SELECT 'SUKCES'
+                END
+
+    END TRY
+        BEGIN CATCH
+            IF @@TRANCOUNT > 0
+                ROLLBACK TRAN
+
+            DECLARE @ErrorMessage NVARCHAR(4000);
+            DECLARE @ErrorSeverity INT;
+            DECLARE @ErrorState INT;
+
+            SELECT
+               @ErrorMessage = ERROR_MESSAGE(),
+               @ErrorSeverity = ERROR_SEVERITY(),
+               @ErrorState = ERROR_STATE();
+            RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+        END CATCH
 """
 cursor.execute(proc_dodaj_ocene)
 
