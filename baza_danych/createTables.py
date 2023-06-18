@@ -20,7 +20,8 @@ drop_tables = """
 
     IF OBJECT_ID('seanse_filmowe',N'U') IS NOT NULL DROP TABLE seanse_filmowe 
     IF OBJECT_ID('sale_kinowe',N'U') IS NOT NULL DROP TABLE sale_kinowe 
-
+    
+    IF OBJECT_ID('oceny',N'U') IS NOT NULL DROP TABLE oceny 
     IF OBJECT_ID('filmy',N'U') IS NOT NULL DROP TABLE filmy 
 
     IF OBJECT_ID('stanowiska',N'U') IS NOT NULL DROP TABLE stanowiska 
@@ -109,6 +110,12 @@ filmy = """
         tytul NVARCHAR(50),
         premiera DATE,
         dlugosc time
+    );
+    CREATE TABLE oceny (
+        id INT IDENTITY(0,1) PRIMARY KEY,
+        film_id INT FOREIGN KEY REFERENCES filmy(film_id),
+        recenzja NVARCHAR(200),
+        ocena INT
     );
     CREATE TABLE filmy_szczegoly (
         film_id INT FOREIGN KEY REFERENCES filmy(film_id),
