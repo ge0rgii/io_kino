@@ -75,7 +75,8 @@ def popularne():
                 "id":       row[0], 
                 "tytul":    row[1], 
                 "premiera": row[2], 
-                "dlugosc":  row[3]
+                "dlugosc":  row[3],
+                "ocena":  row[4]
             })
     return render_template("wyswietl_filmy_popularne.html", filmy = filmy)
 
