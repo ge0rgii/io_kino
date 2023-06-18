@@ -8,6 +8,8 @@ sudo docker pull mcr.microsoft.com/mssql/server:2019-latest
 
 3. uruchamiamy za kazdym razem po starcie dockera:
 
+   Windows: w pliku bd_connection trzeba wybrac polaczenie conn dla windows
+
 docker run -e "ACCEPT_EULA=Y" --platform linux/amd64 -e "SA_PASSWORD=citqus-viVcy6-najcyq" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
 4. uruchom srodowisko wirtualne:
