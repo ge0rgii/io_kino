@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+    <title>REPERTUAR</title>
+    
+    <link rel="stylesheet" crossorigin="anonymous"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" >
+    
+	<script crossorigin="anonymous"
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" >
+	</script>
+    <a class="btn btn-primary" href="/a_wyswietl_filmy">POWROT</a><br></br>
+
+</head>
+
+<body>
+    <h1>Konto administratora</h1>
+    <h2>LISTA REZERWACJI DLA NUMERU {{ numer }}</h2>
+    <br>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">Imie</th>
+            <th scope="col">Nazwisko</th>
+            <th scope="col">Email</th>
+            <th scope="col">Data rozpoczęcia</th>
+            <th scope="col">Tytul filmu</th>
+            <th scope="col">Liczba biletów</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in rezerwacje %}
+            <tr>
+                <td>{{ t.imie}}</th>
+                <td>{{ t.nazwisko }}</td>
+                <td>{{ t.mail }}</td>
+                <td>{{ t.data}}</th>
+                <td>{{ t.tytul }}</td>
+                <td>{{ t.liczba }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+
+
