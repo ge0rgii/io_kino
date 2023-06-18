@@ -310,7 +310,7 @@ wyswietl_filmy = """
             tytul,
             premiera,
             dlugosc,
-            CASE WHEN ocena IS NULL THEN 0 ELSE ocena END AS ocena
+            CASE WHEN ocena IS NULL THEN 'brak' ELSE CAST(ocena AS VARCHAR(10)) END AS ocena
         FROM
             filmy LEFT JOIN wyswietl_oceny ON filmy.film_id = wyswietl_oceny.film_id
 """

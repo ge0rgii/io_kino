@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 <head>
-    <title>Dodawanie Recenzji</title>
+    <title>Wyszukiwanie Rezerwacji</title>
     
     <link rel="stylesheet" crossorigin="anonymous"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" >
@@ -13,18 +13,14 @@
 </head>
 
 <body>
-    <h1>Dodawanie Recenzji</h1>
+    <h1>Wyszukiwanie Rezerwacji</h1>
 
     <form action="" method = "POST">
         <div class="form-group row">
-          <label for="recenzja">Recenzja</label>
-          <input type="text" class="form-control" name="recenzja" id="recenzja" value="{{film.recenzja}}">
-        </div>
-        <div class="form-group row">
-            <label for="ocena">Ocena</label>
-            <input type="text" class="form-control" name="ocena" id="ocena" value="{{film.ocena}}">
+          <label for="recenzja">Podaj Numer Telefonu</label>
+          <input type="text" class="form-control" name="numer" id="numer">
         </div>
         <button type="btnAdd" class="btn btn-primary">Submit</button>
-        <a href="/" class="btn btn-primary">Cancel</a>
+        <a href="/a_wyswietl_filmy" class="btn btn-primary">Cancel</a>
       </form>
 </body>
