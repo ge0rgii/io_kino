@@ -17,13 +17,14 @@ drop = """
     DROP FUNCTION IF EXISTS wyswietl_sale_po_id;
     DROP FUNCTION IF EXISTS wyswietl_aktorow_filmu_po_id;
     DROP FUNCTION IF EXISTS wyswietl_seans_po_id;
+    DROP FUNCTION IF EXISTS wyswietl_seanse_historia_po_id;
     DROP FUNCTION IF EXISTS wyswietl_rezyserow_filmu_po_id;
     DROP FUNCTION IF EXISTS l_sprz_bilet_na_seans;
     DROP FUNCTION IF EXISTS wolne_miejsca;
     DROP VIEW IF EXISTS raport_sprzedazy;
     DROP VIEW IF EXISTS wyswietl_sale_kinowe;
     DROP VIEW IF EXISTS wyswietl_filmy;
-    DROP VIEW IF EXISTS wyswietl_oceny;
+    DROP VIEW IF EXISTS wyswietl_filmy_popularne;
     SET IMPLICIT_TRANSACTIONS OFF;
 """
 cursor.execute(drop)
@@ -195,6 +196,28 @@ wyswietl_seanse_filmu_po_id = """
 cursor.execute(wyswietl_seanse_filmu_po_id)
 
 
+wyswietl_seanse_historia_po_id = """
+    CREATE FUNCTION wyswietl_seanse_historia_po_id (@id_f INT)
+    RETURNS TABLE
+    AS
+    RETURN( 
+        SELECT  
+            filmy.tytul, 
+            filmy.premiera,
+            filmy.dlugosc,
+            S.data_rozpoczecia,
+            S.data_zakonczenia,
+            S.sala_id,
+            S.seans_id,
+            CAST(ISNULL(S.cena,0) AS DECIMAL (19,2)) cena
+        FROM filmy 
+        JOIN 
+            seanse_filmowe AS S ON S.film_id = filmy.film_id
+        WHERE filmy.film_id = @id_f AND S.data_zakonczenia < GETDATE()
+    )
+"""
+cursor.execute(wyswietl_seanse_historia_po_id)
+
 
 
 wyswietl_sale_po_id = """
@@ -233,6 +256,25 @@ wyswietl_sprzedaz = """
 """
 cursor.execute(wyswietl_sprzedaz)
 
+arg = """
+    CREATE VIEW wyswietl_filmy_popularne
+    AS
+        SELECT
+            TOP 5
+            f.film_id,
+            tytul,
+            premiera,
+            dlugosc
+        FROM
+            filmy f
+        LEFT JOIN 
+            seanse_filmowe AS S ON S.film_id = f.film_id
+        LEFT JOIN 
+            zamowienia z ON S.seans_id = z.seans_id
+        GROUP BY f.film_id, tytul, premiera, dlugosc
+        ORDER BY SUM(z.liczba_biletow) DESC
+"""
+cursor.execute(arg)
 
 
 sale = """
@@ -283,4 +325,6 @@ cursor.execute(wyswietl_filmy)
 cursor.commit()
 cursor.close()
 conn.close()
+
+
 

@@ -1,0 +1,43 @@
+#   pobierz docker
+#
+#   sudo docker pull mcr.microsoft.com/mssql/server:2019-latest
+#
+#   pip install pytest
+
+
+
+#   PIERWSZY RAZ PRZED URUCHOMIENIEM TESTOW
+#   uruchamiamy za kazdym razem po starcie dockera
+#   Windows: w pliku bd_connection trzeba wybrac polaczenie conn dla windows
+#
+#   docker run -e "ACCEPT_EULA=Y" --platform linux/amd64 -e "SA_PASSWORD=citqus-viVcy6-najcyq" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+#
+#   python3 -m venv name_of_virtualenv
+#
+#   LINUX:   source name_of_virtualenv/bin/activate
+#   WINDOWS: source $PWD/name_of_virtualenv/Scripts/activate
+#
+#   pip3 install -r requirements.txt   
+#
+#   chmod +x startTests.sh
+#
+#   ./startTests.sh
+
+
+
+#   KAZDY KOLEJNY RAZ PRZED URZUCHOMIENIEM TESTOW ( DZIALA MASZYNA VIRTUALNA PYTHON ORAZ JEST DOZWOLENIE +X dla startTests.sh )
+#
+#   docker run -e "ACCEPT_EULA=Y" --platform linux/amd64 -e "SA_PASSWORD=citqus-viVcy6-najcyq" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+#
+#   ./startTests.sh
+
+
+
+#   URUCHOMIENIE TESTOW 
+#   trzeba znajdowac się w pliku io_kino   .../io_kino
+#
+#   DLA URUCHOMIENIA WSZYSTKICH TESTOW
+#   python -m pytest \tests
+#
+#   DLA URUCHOMIENIA POJEDYNCZEGO TESTU
+#   python -m pytest tests\nazwaTestu.py

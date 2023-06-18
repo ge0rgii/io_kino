@@ -7,6 +7,7 @@ URUCHOMIENIE
 sudo docker pull mcr.microsoft.com/mssql/server:2019-latest
 
 3. uruchamiamy za kazdym razem po starcie dockera:
+   Windows: w pliku bd_connection trzeba wybrac polaczenie conn dla windows
 
    Windows: w pliku bd_connection trzeba wybrac polaczenie conn dla windows
 

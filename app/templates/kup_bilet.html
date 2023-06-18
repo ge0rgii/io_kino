@@ -43,7 +43,11 @@
         </tbody>
     </table>
         <br>
-      <big><strong>Wolne miejsca:</big></strong>
+        <big>
+            <strong>
+                Wolne miejsca:
+            </strong>
+        </big>
         {% for s in seans %}
             {{ s.l }}
         {% endfor %}
@@ -78,6 +82,10 @@
             <label for="plec">Plec</label>
             <input type="text" class="form-control" name="plec" id="plec" value="{{bilet.plec}}">
         </div>
+        <br></br>
+            <label for="regulamin">AKCEPTUJE REGULAMIN</label>
+        <input type="checkbox" id="regulamin" name="regulamin" value="">
+        <br></br>
         <button type="btnAdd" class="btn btn-primary">Submit</button>
         <a href="/" class="btn btn-primary">Cancel</a>
       </form>
