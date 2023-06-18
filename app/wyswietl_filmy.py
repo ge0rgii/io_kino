@@ -151,9 +151,28 @@ def dodaj_recenzje(id):
 
         g.conn.commit()
         return render_template("wynik_dodania.html", wyniki = wyniki)
-
-
-
+        
+@wyswietl_filmy.route("/a_wyswietl_filmy/rezerwacje", methods = ['GET','POST'])
+def wyswietl_rezerwacje():
+    """function generating searching booking view and allowing to search booking with phone number"""
+    
+    if request.method == 'GET':
+        return render_template("rezerwacje.html")
+    if request.method == 'POST':
+        numer = str(request.form["numer"])
+        
+        rezerwacje = []
+        g.cursor.execute("SELECT imie, nazwisko, email, data_rozpoczecia, tytul, liczba_biletow FROM wlasciciel_adresu_email AS e JOIN osoba AS o ON e.osoba_id = o.osoba_id JOIN wlasciciel_nr_tel AS w ON o.osoba_id = w.osoba_id JOIN zamowienia AS z ON w.osoba_id = z.osoba_id JOIN seanse_filmowe AS s ON z.seans_id = s.seans_id JOIN filmy AS f ON s.film_id = f.film_id WHERE nr_tel = " + numer)
+        for row in g.cursor.fetchall():
+            rezerwacje.append( {
+                    "imie":    row[0],
+                    "nazwisko": row[1],
+                    "mail": row[2],
+                    "data":    row[3],
+                    "tytul": row[4],
+                    "liczba":  row[5]
+                })
+        return render_template("rezerwacje_osoby.html", rezerwacje = rezerwacje, numer = numer)
 
 @wyswietl_filmy.route("/a_wyswietl_filmy/sprzedaz")
 def sprzedaz():
