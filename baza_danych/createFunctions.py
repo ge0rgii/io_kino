@@ -24,6 +24,7 @@ drop = """
     DROP VIEW IF EXISTS raport_sprzedazy;
     DROP VIEW IF EXISTS wyswietl_sale_kinowe;
     DROP VIEW IF EXISTS wyswietl_filmy;
+    DROP VIEW IF EXISTS wyswietl_oceny;
     DROP VIEW IF EXISTS wyswietl_filmy_popularne;
     SET IMPLICIT_TRANSACTIONS OFF;
 """
@@ -309,9 +310,9 @@ wyswietl_filmy = """
             tytul,
             premiera,
             dlugosc,
-            ocena
+            CASE WHEN ocena IS NULL THEN 0 ELSE ocena END AS ocena
         FROM
-            filmy JOIN wyswietl_oceny ON filmy.film_id = wyswietl_oceny.film_id
+            filmy LEFT JOIN wyswietl_oceny ON filmy.film_id = wyswietl_oceny.film_id
 """
 cursor.execute(wyswietl_filmy)
 
