@@ -257,6 +257,18 @@ wyswietl_sprzedaz = """
 """
 cursor.execute(wyswietl_sprzedaz)
 
+
+wyswietl_oceny= """
+    CREATE VIEW wyswietl_oceny
+    AS
+        SELECT
+            film_id,
+            AVG(ocena) as ocena
+        FROM oceny
+        GROUP BY film_id
+"""
+cursor.execute(wyswietl_oceny)
+
 arg = """
     CREATE VIEW wyswietl_filmy_popularne
     AS
@@ -265,14 +277,17 @@ arg = """
             f.film_id,
             tytul,
             premiera,
-            dlugosc
+            dlugosc,
+            CASE WHEN ocena IS NULL THEN 'brak' ELSE CAST(ocena AS VARCHAR(10)) END AS ocena
         FROM
             filmy f
         LEFT JOIN 
             seanse_filmowe AS S ON S.film_id = f.film_id
         LEFT JOIN 
             zamowienia z ON S.seans_id = z.seans_id
-        GROUP BY f.film_id, tytul, premiera, dlugosc
+        LEFT JOIN
+            wyswietl_oceny ON f.film_id = wyswietl_oceny.film_id
+        GROUP BY f.film_id, tytul, premiera, dlugosc, ocena
         ORDER BY SUM(z.liczba_biletow) DESC
 """
 cursor.execute(arg)
@@ -290,17 +305,6 @@ sale = """
             sale_kinowe s
 """
 cursor.execute(sale)
-
-wyswietl_oceny= """
-    CREATE VIEW wyswietl_oceny
-    AS
-        SELECT
-            film_id,
-            AVG(ocena) as ocena
-        FROM oceny 
-        GROUP BY film_id
-"""
-cursor.execute(wyswietl_oceny)
 
 wyswietl_filmy = """
     CREATE VIEW wyswietl_filmy
